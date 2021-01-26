@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import React, { memo, Suspense } from 'react';
+import {
+  Provider
+} from 'react-redux';
+import { renderRoutes } from 'react-router-config';
+import { HashRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
+
+import routes from '@/router/index';
+import store from '@/store';
 import './App.css';
 
-function App() {
+export default memo(function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <HashRouter>
+        <div className="App">
+          <div className="App-header">
+          <NavLink to='/home'>home</NavLink>
+          <NavLink to='/about'>about</NavLink>
+            {/* Suspense用于当界面还没加载出来时显示的东西，这里可以传入一个组件 */}
+            <Suspense fallback={<div>page loading</div>}>
+              {renderRoutes(routes)}
+            </Suspense>
+            <p className="App-link">
+              ybin-React-temp
+             </p>
+          </div>
+        </div>
+      </HashRouter>
+    </Provider>
   );
-}
-
-export default App;
+});
